@@ -34,13 +34,7 @@
 
 #include "md_driver_ifc.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-  #include "gen_device_info.h"    // MESA
-#if defined(__cplusplus)
-}
-#endif
+#include "gen_device_info.h"    // MESA
 
 using namespace MetricsDiscovery;
 
