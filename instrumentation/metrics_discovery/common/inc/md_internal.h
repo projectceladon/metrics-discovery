@@ -768,7 +768,7 @@ Description:
 
     private: // Variables
         Vector<CEquationElementInternal>* m_elementsVector;
-        const char*                       m_equationString;
+        const char*                       m_equationString  = NULL;
         CMetricsDevice*                   m_device;
     };
 
