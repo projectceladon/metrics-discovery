@@ -1277,6 +1277,7 @@ TTypedValue_1_0 CMetricsCalculator::CalculateDeltaFunction( TDeltaFunction_1_0 d
         case DELTA_NS_TIME:
             // No 'break' intentional - NS_TIME should be used only for overflow functions, here use as DELTA 32
             deltaFunction.BitsCount = 32;
+            [[clang::fallthrough]];
 
         case DELTA_N_BITS:
             if( deltaFunction.BitsCount <= 64 )
