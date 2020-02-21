@@ -2697,7 +2697,7 @@ TCompletionCode CDriverInterfaceLinuxPerf::GetMesaDeviceInfo( const gen_device_i
     // 2. Get MesaDeviceInfo if not cached already
     if( !isMesaDeviceInfoCached )
     {
-        if( !gen_get_device_info( deviceId, &cachedMesaDeviceInfo ) )
+        if( !gen_get_device_info_from_pci_id( deviceId, &cachedMesaDeviceInfo ) )
         {
             MD_LOG( LOG_ERROR, "ERROR: DeviceId not supported" );
             return CC_ERROR_NOT_SUPPORTED;
