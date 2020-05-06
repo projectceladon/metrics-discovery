@@ -33,7 +33,7 @@ LOCAL_SRC_FILES += instrumentation/metrics_discovery/codegen/md_main_BXT.cpp \
 				   instrumentation/metrics_discovery/linux/md_driver_ifc_linux_perf.cpp \
 				   instrumentation/utils/common/iu_debug.c \
 				   instrumentation/utils/linux/iu_std_linux.cpp \
-				   ../mesa3d-intel/src/intel/dev/gen_device_info.c
+				   ../../../../vendor/intel/external/project-celadon/mesa/src/intel/dev/gen_device_info.c
 
 LOCAL_CPPFLAGS := -DNDEBUG \
 				  -DINCLUDE_ALL_METRICS \
@@ -74,11 +74,11 @@ LOCAL_C_INCLUDES := \
 					$(LOCAL_PATH)/inc/common \
 					$(LOCAL_PATH)/inc/common/instrumentation \
 					$(LOCAL_PATH)/inc/common/instrumentation/api \
-					$(LOCAL_PATH)/../mesa3d-intel/src \
-					$(LOCAL_PATH)/../mesa3d-intel/include \
-					$(LOCAL_PATH)/../mesa3d-intel/src/intel/common \
-					$(LOCAL_PATH)/../mesa3d-intel/src/intel/dev \
-					$(LOCAL_PATH)/../drm-intel/include/drm \
+					$(LOCAL_PATH)/../../../../vendor/intel/external/project-celadon/mesa/src \
+					$(LOCAL_PATH)/../../../../vendor/intel/external/project-celadon/mesa/include \
+					$(LOCAL_PATH)/../../../../vendor/intel/external/project-celadon/mesa/src/intel/common \
+					$(LOCAL_PATH)/../../../../vendor/intel/external/project-celadon/mesa/src/intel/dev \
+					$(LOCAL_PATH)/../../../../vendor/intel/external/project-celadon/libdrm/include/drm \
 
 LOCAL_SHARED_LIBRARIES :=  libcutils \
 						   libdrm \
