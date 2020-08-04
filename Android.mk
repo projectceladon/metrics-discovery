@@ -18,21 +18,27 @@ include $(CLEAR_VARS)
 # Define the platform which you want to compile
 # BXT or SKL or KBL
 
-LOCAL_SRC_FILES += instrumentation/metrics_discovery/codegen/md_main_BXT.cpp \
+LOCAL_SRC_FILES += instrumentation/metrics_discovery/codegen/md_main_HSW.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_BDW.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_BXT.cpp \
 				   instrumentation/metrics_discovery/codegen/md_main_SKL_GT2.cpp \
 				   instrumentation/metrics_discovery/codegen/md_main_SKL_GT3.cpp \
 				   instrumentation/metrics_discovery/codegen/md_main_SKL_GT4.cpp \
 				   instrumentation/metrics_discovery/codegen/md_main_KBL_GT2.cpp \
 				   instrumentation/metrics_discovery/codegen/md_main_KBL_GT3.cpp \
-				   instrumentation/metrics_discovery/codegen/md_main_HSW.cpp \
-				   instrumentation/metrics_discovery/codegen/md_main_BDW.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_CFL_GT2.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_CFL_GT3.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_GLK.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_ICL.cpp \
+				   instrumentation/metrics_discovery/codegen/md_main_EHL.cpp \
 				   instrumentation/metrics_discovery/codegen/md_main.cpp \
 				   instrumentation/metrics_discovery/common/md_utils.cpp \
 				   instrumentation/metrics_discovery/common/md_internal.cpp \
 				   instrumentation/metrics_discovery/common/md_calculation.cpp \
 				   instrumentation/metrics_discovery/linux/md_driver_ifc_linux_perf.cpp \
 				   instrumentation/utils/common/iu_debug.c \
-				   instrumentation/utils/linux/iu_std_linux.cpp \
+				   instrumentation/utils/linux/iu_std.cpp \
+				   instrumentation/utils/linux/iu_os.cpp \
 				   ../mesa3d-intel/src/intel/dev/gen_device_info.c
 
 LOCAL_CPPFLAGS := -DNDEBUG \
@@ -58,6 +64,7 @@ LOCAL_CPPFLAGS := -DNDEBUG \
                                   -Wno-error=unused-parameter \
                                   -Wno-error=missing-braces \
                                   -Wno-error=unused-variable \
+																	-Wno-unused-private-field \
 				  -std=c++11
 
 LOCAL_LDFLAGS :=  -Wl,--no-undefined \
