@@ -33,7 +33,8 @@ LOCAL_SRC_FILES += instrumentation/metrics_discovery/codegen/md_main_BXT.cpp \
 				   instrumentation/metrics_discovery/linux/md_driver_ifc_linux_perf.cpp \
 				   instrumentation/utils/common/iu_debug.c \
 				   instrumentation/utils/linux/iu_std_linux.cpp \
-				   ../mesa3d-intel/src/intel/dev/gen_device_info.c
+				   ../mesa3d-intel/src/intel/dev/gen_device_info.c \
+				   ../mesa3d-intel/src/util/log.c
 
 LOCAL_CPPFLAGS := -DNDEBUG \
 				  -DINCLUDE_ALL_METRICS \
