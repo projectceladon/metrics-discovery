@@ -34,7 +34,7 @@
 
 #include "md_driver_ifc.h"
 
-#include "gen_device_info.h"    // MESA
+#include "intel_device_info.h"    // MESA
 
 using namespace MetricsDiscovery;
 
@@ -181,7 +181,7 @@ private:
     TCompletionCode SendGetParamIoctl( int32_t drmFd, uint32_t paramId, int32_t* outValue );
 
     // Device info params
-    TCompletionCode GetMesaDeviceInfo( const gen_device_info** mesaDeviceInfo );
+    TCompletionCode GetMesaDeviceInfo( const intel_device_info** mesaDeviceInfo );
     TCompletionCode GetDeviceId( int32_t* deviceId );
     TCompletionCode GetInstrPlatformId( GTDI_PLATFORM_INDEX* instrPlatformId );
     TCompletionCode GetGpuFrequencyInfo( uint64_t* minFrequency, uint64_t* maxFrequency, uint64_t* actFrequency, uint64_t* boostFrequency );
@@ -193,7 +193,7 @@ private:
 
     // Device info utils
     uint32_t        GetGtMaxSubslicePerSlice();
-    TCompletionCode MapMesaToInstrPlatform( const gen_device_info* mesaDeviceInfo, GTDI_PLATFORM_INDEX* outInstrPlatformId );
+    TCompletionCode MapMesaToInstrPlatform( const intel_device_info* mesaDeviceInfo, GTDI_PLATFORM_INDEX* outInstrPlatformId );
     TGfxGtType      MapMesaToInstrGtType( int32_t mesaGtType );
 
     // General utils
