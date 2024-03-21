@@ -49,7 +49,7 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-#include "gen_device_info.h"    // MESA
+#include "intel_device_info.h"    // MESA
 #if defined(__cplusplus)
 }
 #endif
@@ -425,12 +425,12 @@ Output:
 \*****************************************************************************/
 const char* CDriverInterfaceLinuxPerf::GetDeviceName()
 {
-    int32_t     deviceId   = -1;
+    const intel_device_info* mesaDeviceInfo = NULL;
     const char* deviceName = NULL;
 
-    if( GetDeviceId( &deviceId ) == CC_OK )
+    if( GetMesaDeviceInfo( &mesaDeviceInfo ) == CC_OK )
     {
-        deviceName = gen_get_device_name( deviceId );
+        deviceName = mesaDeviceInfo->name;
     }
 
     return (deviceName) ? deviceName : "";
@@ -581,7 +581,7 @@ TCompletionCode CDriverInterfaceLinuxPerf::SendDeviceInfoParamEscape( GTDI_DEVIC
 
         case GTDI_DEVICE_PARAM_EU_THREADS_COUNT:
         {
-            const gen_device_info* mesaDeviceInfo = NULL;
+            const intel_device_info* mesaDeviceInfo = NULL;
 
             ret = GetMesaDeviceInfo( &mesaDeviceInfo );
             MD_CHECK_CC_RET( ret );
@@ -593,7 +593,7 @@ TCompletionCode CDriverInterfaceLinuxPerf::SendDeviceInfoParamEscape( GTDI_DEVIC
 
         case GTDI_DEVICE_PARAM_NUMBER_OF_SHADING_UNITS:
         {
-            const gen_device_info* mesaDeviceInfo = NULL;
+            const intel_device_info* mesaDeviceInfo = NULL;
 
             ret = GetMesaDeviceInfo( &mesaDeviceInfo );
             MD_CHECK_CC_RET( ret );
@@ -690,7 +690,7 @@ TCompletionCode CDriverInterfaceLinuxPerf::SendDeviceInfoParamEscape( GTDI_DEVIC
 
         case GTDI_DEVICE_PARAM_GT_TYPE:
         {
-            const gen_device_info* mesaDeviceInfo = NULL;
+            const intel_device_info* mesaDeviceInfo = NULL;
 
             ret = GetMesaDeviceInfo( &mesaDeviceInfo );
             MD_CHECK_CC_RET( ret );
@@ -2678,16 +2678,16 @@ Description:
     have any interface allowing querying this information.
 
 Input:
-    const gen_device_info** mesaDeviceInfo - (OUT) Mesa device info structure
+    const intel_device_info** mesaDeviceInfo - (OUT) Mesa device info structure
 
 Output:
     TCompletionCode                        - *CC_OK* means success
 
 \*****************************************************************************/
-TCompletionCode CDriverInterfaceLinuxPerf::GetMesaDeviceInfo( const gen_device_info** mesaDeviceInfo )
+TCompletionCode CDriverInterfaceLinuxPerf::GetMesaDeviceInfo( const intel_device_info** mesaDeviceInfo )
 {
     static bool            isMesaDeviceInfoCached = false;
-    static gen_device_info cachedMesaDeviceInfo   = {0,};
+    static intel_device_info cachedMesaDeviceInfo   = {0,};
     int32_t                deviceId               = -1;
 
     // 1. Get DeviceId
@@ -2697,7 +2697,7 @@ TCompletionCode CDriverInterfaceLinuxPerf::GetMesaDeviceInfo( const gen_device_i
     // 2. Get MesaDeviceInfo if not cached already
     if( !isMesaDeviceInfoCached )
     {
-        if( !gen_get_device_info_from_pci_id( deviceId, &cachedMesaDeviceInfo ) )
+        if( !intel_get_device_info_from_pci_id( deviceId, &cachedMesaDeviceInfo ) )
         {
             MD_LOG( LOG_ERROR, "ERROR: DeviceId not supported" );
             return CC_ERROR_NOT_SUPPORTED;
@@ -2769,7 +2769,7 @@ TCompletionCode CDriverInterfaceLinuxPerf::GetInstrPlatformId( GTDI_PLATFORM_IND
 {
     MD_CHECK_PTR_RET( instrPlatformId, CC_ERROR_INVALID_PARAMETER );
 
-    const gen_device_info* mesaDeviceInfo = NULL;
+    const intel_device_info* mesaDeviceInfo = NULL;
 
     TCompletionCode ret = GetMesaDeviceInfo( &mesaDeviceInfo );
     MD_CHECK_CC_RET( ret );
@@ -2891,7 +2891,7 @@ Output:
 TCompletionCode CDriverInterfaceLinuxPerf::GetGpuTimestampFrequency( uint64_t* gpuTimestampFrequency )
 {
     MD_CHECK_PTR_RET( gpuTimestampFrequency, CC_ERROR_INVALID_PARAMETER );
-    const gen_device_info* mesaDeviceInfo = NULL;
+    const intel_device_info* mesaDeviceInfo = NULL;
 
     // 1. Get MesaDeviceInfo
     TCompletionCode ret = GetMesaDeviceInfo( &mesaDeviceInfo );
@@ -3116,37 +3116,37 @@ Description:
     Maps Mesa platform information to the instrumentation format.
 
 Input:
-    gen_device_info&     mesaDeviceInfo     - Mesa device info struct obtained from GetMesaDeviceInfo()
+    intel_device_info&     mesaDeviceInfo     - Mesa device info struct obtained from GetMesaDeviceInfo()
     GTDI_PLATFORM_INDEX* outInstrPlatformId - (OUT) platform ID in instrumentation format
 
 Output:
     TCompletionCode                         - *CC_OK* means success
 
 \*****************************************************************************/
-TCompletionCode CDriverInterfaceLinuxPerf::MapMesaToInstrPlatform( const gen_device_info* mesaDeviceInfo, GTDI_PLATFORM_INDEX* outInstrPlatformId )
+TCompletionCode CDriverInterfaceLinuxPerf::MapMesaToInstrPlatform( const intel_device_info* mesaDeviceInfo, GTDI_PLATFORM_INDEX* outInstrPlatformId )
 {
     MD_CHECK_PTR_RET( mesaDeviceInfo, CC_ERROR_INVALID_PARAMETER );
     MD_CHECK_PTR_RET( outInstrPlatformId, CC_ERROR_INVALID_PARAMETER );
 
     TCompletionCode ret = CC_OK;
 
-    if( mesaDeviceInfo->is_haswell )
+    if( mesaDeviceInfo->platform == INTEL_PLATFORM_HSW )
     {
         *outInstrPlatformId = GENERATION_HSW;
     }
-    else if( mesaDeviceInfo->is_broadwell )
+    else if( mesaDeviceInfo->platform == INTEL_PLATFORM_BDW )
     {
         *outInstrPlatformId = GENERATION_BDW;
     }
-    else if( mesaDeviceInfo->is_skylake )
+    else if( mesaDeviceInfo->platform == INTEL_PLATFORM_SKL )
     {
         *outInstrPlatformId = GENERATION_SKL;
     }
-    else if( mesaDeviceInfo->is_broxton )
+    else if( mesaDeviceInfo->platform == INTEL_PLATFORM_BXT )
     {
         *outInstrPlatformId = GENERATION_BXT;
     }
-    else if( mesaDeviceInfo->is_kabylake )
+    else if( mesaDeviceInfo->platform == INTEL_PLATFORM_KBL )
     {
         *outInstrPlatformId = GENERATION_KBL;
     }

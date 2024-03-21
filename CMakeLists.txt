@@ -105,7 +105,7 @@ set (LOCAL_SRC_FILES ${LOCAL_SRC_FILES}
     ${BS_DIR_INSTRUMENTATION}/utils/common/iu_debug.c
     ${BS_DIR_INSTRUMENTATION}/utils/linux/iu_std_linux.cpp
     # external
-    ${BS_DIR_EXTERNAL}/mesa/src/intel/common/gen_device_info.c
+    ${BS_DIR_EXTERNAL}/mesa/src/intel/common/intel_device_info.c
 )
 
 # mdapi internal files
